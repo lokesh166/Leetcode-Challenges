@@ -1,0 +1,40 @@
+class Solution {
+public:
+    int maximumUnits(vector<vector<int>>& boxTypes, int truckSize) {
+//         boxTypes = [[5,10], [2,5], [4,7], [3, 9]]  truckSize = 10
+        
+        priority_queue<pair<int,int>> pq;
+        
+        int count = 0;
+        
+        // Why don't we use priority queue default way of sort by 
+        // first parameter
+        
+        for(vector<int> x: boxTypes)
+        {
+            pq.push( {x[1], x[0]} );
+        }
+        
+        int units = 0;
+        while(!pq.empty() && count < truckSize)
+        {
+            if(count + pq.top().second < truckSize) // 0+5 < 10
+            {
+                count += pq.top().second; /* increase count by no 
+                     of boxes you collect */
+                
+                
+                units += pq.top().second*pq.top().first;  // 5*10 = 50
+                pq.pop();
+            }
+            else
+            {
+                int quantity = truckSize - count; // 10-8=2
+                count += quantity;
+                units += quantity*pq.top().first;
+                pq.pop();
+            }
+        } 
+        return units;
+    }
+};
