@@ -27,3 +27,51 @@ public:
         return minCandy;
     }
 };
+
+
+
+
+
+// o(1) space 
+
+
+class Solution {
+public:
+    int candy(vector<int>& ratings) {
+        int n = ratings.size();
+        int minCandy = n; // assign 1 candy to every childer
+        int i = 1; // i is the pointer to point 1 index childern 
+        
+        while( i < n) {
+            
+//             when same rating childern are their 
+            if(ratings[i] == ratings[i-1]) {
+                i++;
+                continue;
+            }
+            
+//             when increasing slope is come
+            int peak = 0;
+            while(ratings[i] > ratings[i-1]) {
+                peak++;
+                minCandy += peak;
+                i++;
+                
+                if(i == n) return minCandy;
+            }
+            
+            
+//             when decreasing slope is come
+            int downPeak = 0;
+            while(i<n && ratings[i] < ratings[i-1]) {
+                downPeak++;
+                minCandy += downPeak;
+                i++;
+            }
+            
+            minCandy -= min(peak, downPeak);
+        }
+        
+        return minCandy;
+    }
+};
